@@ -1,25 +1,84 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import mockData from "./data/mockData.json";
 import { Table } from "./components/Table";
 
 function App() {
-  const data = mockData;
-  console.log(data);
+  const mockedData = mockData;
   const cities = ["Riga", "Jurmala", "Ventspils", "Daugavpils"];
   const [showSelect, setShowSelect] = useState(false);
-  const [dropdownValue, setDropdownValue] = useState("City");
+  const [data, setData] = useState([
+    {
+      name: "",
+      surname: "",
+      age: "",
+      city: "",
+    },
+  ]);
+
+  const [addFormData, setAddFormData] = useState({
+    name: "",
+    surname: "",
+    age: "",
+    city: "",
+  });
+
+  useEffect(() => {
+    setData(mockedData);
+  }, []);
+
+  useEffect(() => {
+    console.log(addFormData);
+  }, [addFormData]);
+
+  const handleOnSubmit = () => {
+    //creating new person object
+    const newPerson = {
+      name: addFormData.name,
+      surname: addFormData.surname,
+      age: addFormData.age,
+      city: addFormData.city,
+    };
+    // adding new person into data array
+    const updateData = [...data, newPerson];
+    //setting new state
+    setData(updateData);
+  };
+
+  const handleInputChange = (event) => {
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...addFormData };
+    newFormData[fieldName] = fieldValue;
+
+    setAddFormData(newFormData);
+  };
+
+  const handleDropdownChange = (item) => {
+    const fieldName = "city";
+
+    const newFormData = { ...addFormData };
+    newFormData["city"] = item;
+
+    setAddFormData(newFormData);
+  };
+
   return (
     <div className="formContainer">
       <form>
-        <input placeholder="Name" />
-        <input placeholder="Surname" />
-        <input placeholder="Age" />
+        <input placeholder="Name" name="name" onChange={handleInputChange} />
+        <input
+          placeholder="Surname"
+          name="surname"
+          onChange={handleInputChange}
+        />
+        <input placeholder="Age" name="age" onChange={handleInputChange} />
         <div
           className="customDropdown"
           onClick={() => setShowSelect(!showSelect)}
         >
-          {dropdownValue}
+          {addFormData.city}
           {showSelect && (
             <div className="selectContainer">
               {cities.map((city) => {
@@ -27,7 +86,7 @@ function App() {
                   <div
                     key={city}
                     onClick={() => {
-                      setDropdownValue(city);
+                      handleDropdownChange(city);
                     }}
                   >
                     {city}
@@ -38,7 +97,14 @@ function App() {
           )}
         </div>
 
-        <div className="addButton">ADD</div>
+        <div
+          className="addButton"
+          onClick={() => {
+            handleOnSubmit();
+          }}
+        >
+          ADD
+        </div>
       </form>
       <div className="tableContainer">
         <Table data={data} />
