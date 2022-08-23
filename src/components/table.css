@@ -20,10 +20,24 @@ tr {
 th {
   padding: 8px 4px;
   text-align: start;
+  background-color: rgba(10, 80, 139, 1);
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  border: none;
 }
 
 td {
   border: 1px solid rgba(230, 236, 239, 1);
   padding: 8px 4px;
   margin: 0;
+  color: rgba(134, 138, 141, 1);
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
 }
