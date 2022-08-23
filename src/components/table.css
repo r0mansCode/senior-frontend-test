@@ -1,0 +1,29 @@
+table {
+  background-color: white;
+  padding: 0;
+  border-spacing: 0 !important;
+  border-collapse: collapse;
+  width: 600px;
+}
+
+tr,
+th {
+  border-collapse: collapse;
+  padding: 0;
+  margin: 0;
+}
+
+tr {
+  border: 1px solid rgba(230, 236, 239, 1);
+}
+
+th {
+  padding: 8px 4px;
+  text-align: start;
+}
+
+td {
+  border: 1px solid rgba(230, 236, 239, 1);
+  padding: 8px 4px;
+  margin: 0;
+}
