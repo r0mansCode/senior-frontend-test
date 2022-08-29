@@ -80,3 +80,22 @@ td {
 .deleteIcon {
   color: red;
 }
+
+.actionColumn {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 42px;
+}
+
+.editAction {
+  text-decoration-line: underline;
+  color: #057ae3;
+  cursor: pointer;
+}
+
+.deleteAction {
+  text-decoration-line: underline;
+  color: #b0263d;
+  cursor: pointer;
+}

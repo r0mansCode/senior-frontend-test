@@ -3,6 +3,7 @@ import "./App.css";
 import mockData from "./data/mockData.json";
 import { Table } from "./components/Table";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+// import { uuid as uuidv4 } from "uuidv4";
 
 function App() {
   const mockedData = mockData;
@@ -10,6 +11,7 @@ function App() {
   const [showSelect, setShowSelect] = useState(false);
   const [data, setData] = useState([
     {
+      // id: "",
       name: "",
       surname: "",
       age: "",
@@ -18,6 +20,7 @@ function App() {
   ]);
 
   const [addFormData, setAddFormData] = useState({
+    // id: "",
     name: "",
     surname: "",
     age: "",
@@ -35,6 +38,7 @@ function App() {
   const handleOnSubmit = () => {
     //creating new person object
     const newPerson = {
+      // id: uuidv4,
       name: addFormData.name,
       surname: addFormData.surname,
       age: addFormData.age,
@@ -63,6 +67,15 @@ function App() {
     newFormData["city"] = item;
 
     setAddFormData(newFormData);
+  };
+
+  const handleDeleteRow = (targetName) => {
+    setData((current) =>
+      current.filter((person) => {
+        // 👇️ remove object that has id equal to 2
+        return person.name !== targetName;
+      })
+    );
   };
 
   return (
@@ -113,7 +126,7 @@ function App() {
           </div>
         </form>
       </div>
-      <Table data={data} />
+      <Table data={data} handleDeleteRow={handleDeleteRow} />
     </>
   );
 }
