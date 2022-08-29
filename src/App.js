@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import mockData from "./data/mockData.json";
 import { Table } from "./components/Table";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 function App() {
   const mockedData = mockData;
@@ -65,51 +66,55 @@ function App() {
   };
 
   return (
-    <div className="formContainer">
-      <form>
-        <input placeholder="Name" name="name" onChange={handleInputChange} />
-        <input
-          placeholder="Surname"
-          name="surname"
-          onChange={handleInputChange}
-        />
-        <input placeholder="Age" name="age" onChange={handleInputChange} />
-        <div
-          className="customDropdown"
-          onClick={() => setShowSelect(!showSelect)}
-        >
-          {addFormData.city}
-          {showSelect && (
-            <div className="selectContainer">
-              {cities.map((city) => {
-                return (
-                  <div
-                    key={city}
-                    onClick={() => {
-                      handleDropdownChange(city);
-                    }}
-                  >
-                    {city}
-                  </div>
-                );
-              })}
+    <>
+      <div className="formContainer">
+        <form>
+          <input placeholder="Name" name="name" onChange={handleInputChange} />
+          <input
+            placeholder="Surname"
+            name="surname"
+            onChange={handleInputChange}
+          />
+          <input placeholder="Age" name="age" onChange={handleInputChange} />
+          <div
+            className="customDropdown"
+            onClick={() => setShowSelect(!showSelect)}
+            style={{ color: addFormData.city.length !== 0 && "black" }}
+          >
+            {addFormData.city.length === 0 ? "City" : addFormData.city}
+            {showSelect && (
+              <div className="selectContainer">
+                {cities.map((city) => {
+                  return (
+                    <div
+                      key={city}
+                      onClick={() => {
+                        handleDropdownChange(city);
+                      }}
+                    >
+                      {city}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div className="dropdownIcon">
+              {!showSelect ? <IoIosArrowDown /> : <IoIosArrowUp />}
             </div>
-          )}
-        </div>
+          </div>
 
-        <div
-          className="addButton"
-          onClick={() => {
-            handleOnSubmit();
-          }}
-        >
-          ADD
-        </div>
-      </form>
-      <div className="tableContainer">
-        <Table data={data} />
+          <div
+            className="addButton"
+            onClick={() => {
+              handleOnSubmit();
+            }}
+          >
+            ADD
+          </div>
+        </form>
       </div>
-    </div>
+      <Table data={data} />
+    </>
   );
 }
 

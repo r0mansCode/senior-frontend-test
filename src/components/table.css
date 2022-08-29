@@ -1,9 +1,15 @@
+.tableContainer {
+  margin-top: 32px;
+  width: fit-content;
+}
+
 table {
   background-color: white;
   padding: 0;
   border-spacing: 0 !important;
   border-collapse: collapse;
-  width: 600px;
+  width: fit-content;
+  min-width: 500px;
 }
 
 tr,
@@ -40,4 +46,37 @@ td {
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
+}
+
+.copyButton {
+  width: fit-content;
+  padding: 5px 16.5px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #ffffff;
+  background-color: rgba(17, 147, 255, 1);
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  opacity: 0.8;
+}
+
+.copyButton:active {
+  transform: translateY(2%);
+}
+
+.tableToolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 12px;
+}
+
+.deleteIcon {
+  color: red;
 }

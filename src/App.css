@@ -1,20 +1,17 @@
 .formContainer {
-  margin: 24px auto 0;
+  /* margin: 24px auto 0; */
   box-sizing: border-box;
   background-color: white;
   width: 280px;
   height: 318px;
   padding: 20px 16px;
+  border: 1px solid red;
 }
 
 .formContainer form {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.tableContainer {
-  margin-top: 52px;
 }
 
 .addButton {
@@ -53,6 +50,12 @@
   cursor: pointer;
 }
 
+.dropdownIcon {
+  position: absolute;
+  right: 0;
+  margin-right: 14px;
+}
+
 .selectContainer {
   position: absolute;
   font-family: "Roboto";
@@ -73,6 +76,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  color: rgba(134, 138, 141, 1);
 }
 
 .selectContainer div:hover {
