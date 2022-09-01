@@ -30,7 +30,7 @@ export const Table = ({ data, handleDeleteRow }) => {
                 <div className="editAction">Edit</div>
                 <div
                   className="deleteAction"
-                  onClick={() => handleDeleteRow(row.name)}
+                  onClick={() => handleDeleteRow(row.id)}
                 >
                   Delete
                 </div>
