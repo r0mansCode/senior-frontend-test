@@ -1,8 +1,8 @@
 import React from "react";
-import "./table.css";
+import "./Table.css";
 import { FaTimes } from "react-icons/fa";
 
-export const Table = ({ data, handleDeleteRow }) => {
+export const Table = ({ data, handleDeleteRow, handleEditRow }) => {
   return (
     <div className="tableContainer">
       <div className="tableToolbar">
@@ -27,7 +27,12 @@ export const Table = ({ data, handleDeleteRow }) => {
               <td>{row.age}</td>
               <td>{row.city}</td>
               <td className="actionColumn">
-                <div className="editAction">Edit</div>
+                <div
+                  className="editAction"
+                  onClick={() => handleEditRow(row.id)}
+                >
+                  Edit
+                </div>
                 <div
                   className="deleteAction"
                   onClick={() => handleDeleteRow(row.id)}

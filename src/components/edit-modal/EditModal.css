@@ -1,0 +1,97 @@
+.formContainer {
+  /* margin: 24px auto 0; */
+  box-sizing: border-box;
+  background-color: white;
+  width: 280px;
+  height: 318px;
+  padding: 20px 16px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.formContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.addButton {
+  color: white;
+  background-color: rgba(194, 203, 209, 1);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  padding-block: 14px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  opacity: 0.8;
+}
+
+.addButton:active {
+  transform: translateY(2%);
+}
+
+.customDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  height: 42px;
+  border: 1px solid rgba(230, 236, 239, 1);
+  text-indent: 10px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #868a8d;
+  cursor: pointer;
+}
+
+.dropdownIcon {
+  position: absolute;
+  right: 0;
+  margin-right: 14px;
+}
+
+.selectContainer {
+  position: absolute;
+  font-family: "Roboto";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  top: 0;
+  transform: translateY(44px);
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e6ecef;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+}
+
+.selectContainer div {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: rgba(134, 138, 141, 1);
+}
+
+.selectContainer div:hover {
+  color: rgba(33, 34, 41, 1);
+  font-weight: 700;
+}
+
+.selectContainer div::before {
+  content: " ";
+  position: absolute;
+  width: 93%;
+  height: 1px;
+  background-color: rgba(230, 236, 239, 1);
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  transform: translateY(17px);
+}
