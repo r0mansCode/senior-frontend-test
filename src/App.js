@@ -3,13 +3,13 @@ import "./App.css";
 import mockData from "./data/mockData.json";
 import { Table } from "./components/table/Table";
 import { EditModal } from "./components/edit-modal/EditModal";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { v4 } from "uuid";
 
 function App() {
   const mockedData = mockData;
   const cities = ["Riga", "Jurmala", "Ventspils", "Daugavpils"];
-  const [showSelect, setShowSelect] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [rowId, setRowId] = useState();
   const [data, setData] = useState([
     {
       id: "",
@@ -32,11 +32,7 @@ function App() {
     setData(mockedData);
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  const handleOnSubmit = () => {
+  const handleOnSubmitAdd = () => {
     //creating new person object
     const newPerson = {
       id: v4(),
@@ -49,6 +45,22 @@ function App() {
     const updateData = [...data, newPerson];
     //setting new state
     setData(updateData);
+  };
+
+  const handleOnSubmitEdit = () => {
+    const editedData = data.map((obj) => {
+      if (obj.id === rowId)
+        return {
+          ...obj,
+          name: addFormData.name,
+          surname: addFormData.surname,
+          age: addFormData.age,
+          city: addFormData.city,
+        };
+      else return obj;
+    });
+    setData(editedData);
+    setShowModal(false);
   };
 
   const handleInputChange = (event) => {
@@ -79,28 +91,40 @@ function App() {
     );
   };
 
-  // const handleEditRow = (targetId) => {
-  //   const editedData = data.map((obj) => {
-  //     if (obj.id === targetId) return { ...obj, name: "Modest" };
-  //     else return obj;
-  //   });
-  //   setData(editedData);
-  // };
+  const handleEditRow = (targetId) => {
+    setRowId(targetId);
+    setShowModal(true);
+  };
 
   return (
     <>
-      <EditModal
-        handleInputChange={handleInputChange}
-        addFormData={addFormData}
-        cities={cities}
-        handleDropdownChange={handleDropdownChange}
-        handleOnSubmit={handleOnSubmit}
-      />
-      <Table
-        data={data}
-        handleDeleteRow={handleDeleteRow}
-        // handleEditRow={handleEditRow}
-      />
+      {showModal && (
+        <div className="editModalContainer">
+          <EditModal
+            handleInputChange={handleInputChange}
+            addFormData={addFormData}
+            cities={cities}
+            handleDropdownChange={handleDropdownChange}
+            handleOnSubmit={handleOnSubmitEdit}
+          />
+        </div>
+      )}
+      <div className="appContainer">
+        <div>
+          <EditModal
+            handleInputChange={handleInputChange}
+            addFormData={addFormData}
+            cities={cities}
+            handleDropdownChange={handleDropdownChange}
+            handleOnSubmit={handleOnSubmitAdd}
+          />
+          <Table
+            data={data}
+            handleDeleteRow={handleDeleteRow}
+            handleEditRow={handleEditRow}
+          />
+        </div>
+      </div>
     </>
   );
 }
