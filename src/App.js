@@ -10,7 +10,7 @@ function App() {
   const cities = ["Riga", "Jurmala", "Ventspils", "Daugavpils"];
   const [showModal, setShowModal] = useState(false);
   const [rowId, setRowId] = useState();
-  const [tableId, setTableId] = useState();
+  const [searchTableId, setTableId] = useState();
   const [editCopy, setEditCopy] = useState(false);
   const [data, setData] = useState({
     tableId: "original_table",
@@ -40,10 +40,6 @@ function App() {
       tableData: mockedData,
     }));
   }, []);
-
-  useEffect(() => {
-    console.log(tableCopies);
-  }, [tableCopies]);
 
   const handleOnSubmitAdd = () => {
     //creating new person object
@@ -82,7 +78,7 @@ function App() {
     setAddFormData(newFormData);
   };
 
-  const handleDeleteRow = (targetId) => {
+  const handleDeleteOriginalTableRow = (targetId) => {
     // 👇️ remove object that has id equal to target
     const filteredData = data.tableData.filter((person) => {
       return person.id !== targetId;
@@ -94,15 +90,32 @@ function App() {
     }));
   };
 
+  const handleDeleteRow = (targetId, searchTableId) => {
+    setTableId(searchTableId);
+    const filteredTablesArray = tableCopies.map((table, ind) => {
+      if (table.tableId === searchTableId) {
+        const editedData = tableCopies[ind].tableData.filter((person) => {
+          return person.id !== targetId;
+        });
+        const newTable = {
+          tableId: table.tableId,
+          tableData: editedData,
+        };
+        return newTable;
+      } else return table;
+    });
+    setTableCopies(filteredTablesArray);
+  };
+
   const handleEditOriginalTableRow = (targetId) => {
     setRowId(targetId);
     setEditCopy(false);
     setShowModal(true);
   };
 
-  const handleEditRow = (targetId, tableId) => {
+  const handleEditRow = (targetId, searchTableId) => {
     setRowId(targetId);
-    setTableId(tableId);
+    setTableId(searchTableId);
     setEditCopy(true);
     setShowModal(true);
   };
@@ -129,7 +142,7 @@ function App() {
 
   const handleOnSubmitEditCopy = () => {
     const editedTable = tableCopies.map((table, ind) => {
-      if (table.tableId === tableId) {
+      if (table.tableId === searchTableId) {
         const editedData = tableCopies[ind].tableData.map((obj) => {
           if (obj.id === rowId)
             return {
@@ -162,22 +175,26 @@ function App() {
   };
 
   const handleCopyTable = (event) => {
-    const findTableId = tableCopies.find(
+    const findTable = tableCopies.find(
       (table) => table.tableId === event.currentTarget.id
     );
     const newTableCopy = {
       tableId: v4(),
-      tableData: JSON.parse(JSON.stringify(findTableId.tableData)),
+      tableData: JSON.parse(JSON.stringify(findTable.tableData)),
     };
     const updateData = [...tableCopies, newTableCopy];
     setTableCopies(updateData);
   };
 
+  const handleDeleteOriginalTable = () => {
+    alert("Original table can not be deleted");
+  };
+
   const handleDeleteTable = (event) => {
-    const filteredData = tableCopies.filter((table) => {
-      return table.tableId !== event.currentTarget.id;
-    });
-    setTableCopies(filteredData);
+    const filteredTableArray = tableCopies.filter(
+      (table) => table.tableId !== event.currentTarget.id
+    );
+    setTableCopies(filteredTableArray);
   };
 
   return (
@@ -206,9 +223,10 @@ function App() {
           />
           <Table
             data={data.tableData}
-            handleDeleteRow={handleDeleteRow}
+            handleDeleteRow={handleDeleteOriginalTableRow}
             handleEditRow={handleEditOriginalTableRow}
             handleCopyTable={handleCopyOriginalTable}
+            handleDeleteTable={handleDeleteOriginalTable}
           />
           {tableCopies &&
             tableCopies.map((table) => {

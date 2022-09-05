@@ -13,10 +13,18 @@ export const Table = ({
   return (
     <div className="tableContainer">
       <div className="tableToolbar">
-        <div className="copyButton" id={tableId} onClick={(e) => handleCopyTable(e)}>
+        <div
+          className="copyButton"
+          id={tableId}
+          onClick={(e) => handleCopyTable(e)}
+        >
           Copy Table
         </div>
-        <FaTimes className="deleteIcon" id={tableId} onClick={(e) => handleDeleteTable(e)}/>
+        <FaTimes
+          className="deleteIcon"
+          id={tableId}
+          onClick={(e) => handleDeleteTable(e)}
+        />
       </div>
       <table>
         <thead>
@@ -44,7 +52,7 @@ export const Table = ({
                 </div>
                 <div
                   className="deleteAction"
-                  onClick={() => handleDeleteRow(row.id)}
+                  onClick={(e) => handleDeleteRow(row.id, tableId)}
                 >
                   Delete
                 </div>

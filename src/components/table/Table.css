@@ -79,6 +79,7 @@ td {
 
 .deleteIcon {
   color: red;
+  cursor: pointer;
 }
 
 .actionColumn {
