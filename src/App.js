@@ -10,15 +10,19 @@ function App() {
   const cities = ["Riga", "Jurmala", "Ventspils", "Daugavpils"];
   const [showModal, setShowModal] = useState(false);
   const [rowId, setRowId] = useState();
-  const [data, setData] = useState([
-    {
-      id: "",
-      name: "",
-      surname: "",
-      age: "",
-      city: "",
-    },
-  ]);
+  const [data, setData] = useState({
+    tableId: "original_table",
+    tableData: [
+      {
+        id: "",
+        name: "",
+        surname: "",
+        age: "",
+        city: "",
+      },
+    ],
+  });
+  const [tableCopies, setTableCopies] = useState([]);
 
   const [addFormData, setAddFormData] = useState({
     id: "",
@@ -29,7 +33,10 @@ function App() {
   });
 
   useEffect(() => {
-    setData(mockedData);
+    setData((current) => ({
+      tableId: current.tableId,
+      tableData: mockedData,
+    }));
   }, []);
 
   const handleOnSubmitAdd = () => {
@@ -42,13 +49,16 @@ function App() {
       city: addFormData.city,
     };
     // adding new person into data array
-    const updateData = [...data, newPerson];
+    const updateData = [...data.tableData, newPerson];
     //setting new state
-    setData(updateData);
+    setData((current) => ({
+      tableId: current.tableId,
+      tableData: updateData,
+    }));
   };
 
   const handleOnSubmitEdit = () => {
-    const editedData = data.map((obj) => {
+    const editedData = data.tableData.map((obj) => {
       if (obj.id === rowId)
         return {
           ...obj,
@@ -59,7 +69,11 @@ function App() {
         };
       else return obj;
     });
-    setData(editedData);
+    // setData(editedData);
+    setData((current) => ({
+      tableId: current.tableId,
+      tableData: editedData,
+    }));
     setShowModal(false);
   };
 
@@ -83,12 +97,24 @@ function App() {
   };
 
   const handleDeleteRow = (targetId) => {
-    setData((current) =>
-      current.filter((person) => {
-        // 👇️ remove object that has id equal to target
-        return person.id !== targetId;
-      })
-    );
+    // 👇️ remove object that has id equal to target
+    const filteredData = data.tableData.filter((person) => {
+      return person.id !== targetId;
+    });
+    // set state with filtered array
+    setData((current) => ({
+      tableId: current.tableId,
+      tableData: filteredData,
+    }));
+  };
+
+  const handleCopyTable = () => {
+    const newTableCopy = {
+      tableId: v4(),
+      tableData: JSON.parse(JSON.stringify(data.tableData)),
+    };
+    const updateData = [...tableCopies, newTableCopy];
+    setTableCopies(updateData);
   };
 
   const handleEditRow = (targetId) => {
@@ -119,10 +145,25 @@ function App() {
             handleOnSubmit={handleOnSubmitAdd}
           />
           <Table
-            data={data}
+            data={data.tableData}
             handleDeleteRow={handleDeleteRow}
             handleEditRow={handleEditRow}
+            handleCopyTable={handleCopyTable}
           />
+          {tableCopies &&
+            tableCopies.map((table) => {
+              return (
+                <div>
+                  <Table
+                    data={table.tableData}
+                    handleDeleteRow={handleDeleteRow}
+                    handleEditRow={handleEditRow}
+                    handleCopyTable={handleCopyTable}
+                  />
+                </div>
+              );
+              // );
+            })}
         </div>
       </div>
     </>

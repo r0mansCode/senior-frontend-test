@@ -2,11 +2,18 @@ import React from "react";
 import "./Table.css";
 import { FaTimes } from "react-icons/fa";
 
-export const Table = ({ data, handleDeleteRow, handleEditRow }) => {
+export const Table = ({
+  data,
+  handleDeleteRow,
+  handleEditRow,
+  handleCopyTable,
+}) => {
   return (
     <div className="tableContainer">
       <div className="tableToolbar">
-        <div className="copyButton">Copy Table</div>
+        <div className="copyButton" onClick={() => handleCopyTable(data)}>
+          Copy Table
+        </div>
         <FaTimes className="deleteIcon" />
       </div>
       <table>
