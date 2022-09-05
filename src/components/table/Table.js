@@ -7,14 +7,16 @@ export const Table = ({
   handleDeleteRow,
   handleEditRow,
   handleCopyTable,
+  tableId,
+  handleDeleteTable,
 }) => {
   return (
     <div className="tableContainer">
       <div className="tableToolbar">
-        <div className="copyButton" onClick={() => handleCopyTable(data)}>
+        <div className="copyButton" id={tableId} onClick={(e) => handleCopyTable(e)}>
           Copy Table
         </div>
-        <FaTimes className="deleteIcon" />
+        <FaTimes className="deleteIcon" id={tableId} onClick={(e) => handleDeleteTable(e)}/>
       </div>
       <table>
         <thead>
@@ -36,7 +38,7 @@ export const Table = ({
               <td className="actionColumn">
                 <div
                   className="editAction"
-                  onClick={() => handleEditRow(row.id)}
+                  onClick={() => handleEditRow(row.id, tableId)}
                 >
                   Edit
                 </div>

@@ -10,6 +10,8 @@ function App() {
   const cities = ["Riga", "Jurmala", "Ventspils", "Daugavpils"];
   const [showModal, setShowModal] = useState(false);
   const [rowId, setRowId] = useState();
+  const [tableId, setTableId] = useState();
+  const [editCopy, setEditCopy] = useState(false);
   const [data, setData] = useState({
     tableId: "original_table",
     tableData: [
@@ -39,6 +41,10 @@ function App() {
     }));
   }, []);
 
+  useEffect(() => {
+    console.log(tableCopies)
+  }, [tableCopies])
+
   const handleOnSubmitAdd = () => {
     //creating new person object
     const newPerson = {
@@ -55,26 +61,6 @@ function App() {
       tableId: current.tableId,
       tableData: updateData,
     }));
-  };
-
-  const handleOnSubmitEdit = () => {
-    const editedData = data.tableData.map((obj) => {
-      if (obj.id === rowId)
-        return {
-          ...obj,
-          name: addFormData.name,
-          surname: addFormData.surname,
-          age: addFormData.age,
-          city: addFormData.city,
-        };
-      else return obj;
-    });
-    // setData(editedData);
-    setData((current) => ({
-      tableId: current.tableId,
-      tableData: editedData,
-    }));
-    setShowModal(false);
   };
 
   const handleInputChange = (event) => {
@@ -108,7 +94,78 @@ function App() {
     }));
   };
 
-  const handleCopyTable = () => {
+  const handleEditOriginalTableRow = (targetId) => {
+    setRowId(targetId);
+    setEditCopy(false)
+    setShowModal(true);
+  };
+
+  const handleEditRow = (targetId, tableId) => {
+    setRowId(targetId);
+    setTableId(tableId)
+    setEditCopy(true)
+    setShowModal(true);
+  };
+
+  const handleOnSubmitEdit = () => {
+    const editedData = data.tableData.map((obj) => {
+      if (obj.id === rowId)
+        return {
+          ...obj,
+          name: addFormData.name,
+          surname: addFormData.surname,
+          age: addFormData.age,
+          city: addFormData.city,
+        };
+      else return obj;
+    });
+    // setData(editedData);
+    setData((current) => ({
+      tableId: current.tableId,
+      tableData: editedData,
+    }));
+    setShowModal(false);
+  };
+
+  const handleOnSubmitEditCopy = () => {
+    const editedTableData = tableCopies.map((table, ind) => {
+      if (table.tableId === tableId) return tableCopies[ind].tableData.map((obj) => {
+        if (obj.id === rowId)
+          return {
+            ...obj,
+            name: addFormData.name,
+            surname: addFormData.surname,
+            age: addFormData.age,
+            city: addFormData.city,
+        };
+        else return obj;
+      }) 
+      else return table
+    })
+
+    // const editedData = tableCopies.tableData.map((obj) => {
+    //   if (obj.id === rowId)
+    //     return {
+    //       ...obj,
+    //       name: addFormData.name,
+    //       surname: addFormData.surname,
+    //       age: addFormData.age,
+    //       city: addFormData.city,
+    //     };
+    //   else return obj;
+    // });
+    // setData(editedData);
+    // setData((current) => ({
+    //   tableId: current.tableId,
+    //   tableData: editedData,
+    // }));
+
+    // setTableCopies(editedTableData)
+    console.log(editedTableData)
+    setShowModal(false);
+  };
+
+  const handleCopyOriginalTable = (id) => {
     const newTableCopy = {
       tableId: v4(),
       tableData: JSON.parse(JSON.stringify(data.tableData)),
@@ -117,9 +174,21 @@ function App() {
     setTableCopies(updateData);
   };
 
-  const handleEditRow = (targetId) => {
-    setRowId(targetId);
-    setShowModal(true);
+  const handleCopyTable = (event) => {
+    const findTableId = tableCopies.find(table => table.tableId === event.currentTarget.id)
+    const newTableCopy = {
+      tableId: v4(),
+      tableData: JSON.parse(JSON.stringify(findTableId.tableData)),
+    };
+    const updateData = [...tableCopies, newTableCopy];
+    setTableCopies(updateData);
+  };
+
+  const handleDeleteTable = (event) => {
+    const filteredData = tableCopies.filter((table) => {
+      return table.tableId !== event.currentTarget.id;
+    });
+    setTableCopies(filteredData);
   };
 
   return (
@@ -131,7 +200,7 @@ function App() {
             addFormData={addFormData}
             cities={cities}
             handleDropdownChange={handleDropdownChange}
-            handleOnSubmit={handleOnSubmitEdit}
+            handleOnSubmit={!editCopy ? handleOnSubmitEdit : handleOnSubmitEditCopy}
           />
         </div>
       )}
@@ -147,8 +216,8 @@ function App() {
           <Table
             data={data.tableData}
             handleDeleteRow={handleDeleteRow}
-            handleEditRow={handleEditRow}
-            handleCopyTable={handleCopyTable}
+            handleEditRow={handleEditOriginalTableRow}
+            handleCopyTable={handleCopyOriginalTable}
           />
           {tableCopies &&
             tableCopies.map((table) => {
@@ -159,10 +228,11 @@ function App() {
                     handleDeleteRow={handleDeleteRow}
                     handleEditRow={handleEditRow}
                     handleCopyTable={handleCopyTable}
+                    tableId={table.tableId}
+                    handleDeleteTable={handleDeleteTable}
                   />
                 </div>
               );
-              // );
             })}
         </div>
       </div>
