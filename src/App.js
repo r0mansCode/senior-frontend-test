@@ -42,8 +42,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(tableCopies)
-  }, [tableCopies])
+    console.log(tableCopies);
+  }, [tableCopies]);
 
   const handleOnSubmitAdd = () => {
     //creating new person object
@@ -96,14 +96,14 @@ function App() {
 
   const handleEditOriginalTableRow = (targetId) => {
     setRowId(targetId);
-    setEditCopy(false)
+    setEditCopy(false);
     setShowModal(true);
   };
 
   const handleEditRow = (targetId, tableId) => {
     setRowId(targetId);
-    setTableId(tableId)
-    setEditCopy(true)
+    setTableId(tableId);
+    setEditCopy(true);
     setShowModal(true);
   };
 
@@ -128,40 +128,27 @@ function App() {
   };
 
   const handleOnSubmitEditCopy = () => {
-    const editedTableData = tableCopies.map((table, ind) => {
-      if (table.tableId === tableId) return tableCopies[ind].tableData.map((obj) => {
-        if (obj.id === rowId)
-          return {
-            ...obj,
-            name: addFormData.name,
-            surname: addFormData.surname,
-            age: addFormData.age,
-            city: addFormData.city,
+    const editedTable = tableCopies.map((table, ind) => {
+      if (table.tableId === tableId) {
+        const editedData = tableCopies[ind].tableData.map((obj) => {
+          if (obj.id === rowId)
+            return {
+              ...obj,
+              name: addFormData.name,
+              surname: addFormData.surname,
+              age: addFormData.age,
+              city: addFormData.city,
+            };
+          else return obj;
+        });
+        const newTable = {
+          tableId: table.tableId,
+          tableData: editedData,
         };
-        else return obj;
-      }) 
-      else return table
-    })
-
-    // const editedData = tableCopies.tableData.map((obj) => {
-    //   if (obj.id === rowId)
-    //     return {
-    //       ...obj,
-    //       name: addFormData.name,
-    //       surname: addFormData.surname,
-    //       age: addFormData.age,
-    //       city: addFormData.city,
-    //     };
-    //   else return obj;
-    // });
-    // setData(editedData);
-    // setData((current) => ({
-    //   tableId: current.tableId,
-    //   tableData: editedData,
-    // }));
-
-    // setTableCopies(editedTableData)
-    console.log(editedTableData)
+        return newTable;
+      } else return table;
+    });
+    setTableCopies(editedTable);
     setShowModal(false);
   };
 
@@ -175,7 +162,9 @@ function App() {
   };
 
   const handleCopyTable = (event) => {
-    const findTableId = tableCopies.find(table => table.tableId === event.currentTarget.id)
+    const findTableId = tableCopies.find(
+      (table) => table.tableId === event.currentTarget.id
+    );
     const newTableCopy = {
       tableId: v4(),
       tableData: JSON.parse(JSON.stringify(findTableId.tableData)),
@@ -200,7 +189,9 @@ function App() {
             addFormData={addFormData}
             cities={cities}
             handleDropdownChange={handleDropdownChange}
-            handleOnSubmit={!editCopy ? handleOnSubmitEdit : handleOnSubmitEditCopy}
+            handleOnSubmit={
+              !editCopy ? handleOnSubmitEdit : handleOnSubmitEditCopy
+            }
           />
         </div>
       )}
