@@ -19,4 +19,14 @@
   height: 100%;
   backdrop-filter: blur(5px);
   z-index: 10;
+  animation: blurout 0.5s;
+}
+
+@keyframes blurout {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
