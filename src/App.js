@@ -42,7 +42,6 @@ function App() {
   }, []);
 
   const handleOnSubmitAdd = () => {
-    //creating new person object
     const newPerson = {
       id: v4(),
       name: addFormData.name,
@@ -50,13 +49,24 @@ function App() {
       age: addFormData.age,
       city: addFormData.city,
     };
-    // adding new person into data array
     const updateData = [...data.tableData, newPerson];
-    //setting new state
-    setData((current) => ({
-      tableId: current.tableId,
-      tableData: updateData,
-    }));
+    const addFormArray = [
+      addFormData.name.replace(/ /g, "").length,
+      addFormData.surname.replace(/ /g, "").length,
+      addFormData.age.replace(/ /g, "").length,
+      addFormData.city.replace(/ /g, "").length,
+    ];
+    console.log(addFormArray);
+    function checkLength(param) {
+      return param > 0;
+    }
+    const isFormCompleted = addFormArray.every(checkLength);
+    isFormCompleted
+      ? setData((current) => ({
+          tableId: current.tableId,
+          tableData: updateData,
+        }))
+      : alert("Please fill out all the fields");
   };
 
   const handleInputChange = (event) => {
@@ -79,11 +89,9 @@ function App() {
   };
 
   const handleDeleteOriginalTableRow = (targetId) => {
-    // 👇️ remove object that has id equal to target
     const filteredData = data.tableData.filter((person) => {
       return person.id !== targetId;
     });
-    // set state with filtered array
     setData((current) => ({
       tableId: current.tableId,
       tableData: filteredData,
@@ -120,6 +128,10 @@ function App() {
     setShowModal(true);
   };
 
+  function checkLength(param) {
+    return param > 0;
+  }
+
   const handleOnSubmitEdit = () => {
     const editedData = data.tableData.map((obj) => {
       if (obj.id === rowId)
@@ -132,12 +144,23 @@ function App() {
         };
       else return obj;
     });
-    // setData(editedData);
-    setData((current) => ({
-      tableId: current.tableId,
-      tableData: editedData,
-    }));
-    setShowModal(false);
+    const addFormArray = [
+      addFormData.name.replace(/ /g, "").length,
+      addFormData.surname.replace(/ /g, "").length,
+      addFormData.age.replace(/ /g, "").length,
+      addFormData.city.replace(/ /g, "").length,
+    ];
+
+    const isFormCompleted = addFormArray.every(checkLength);
+    isFormCompleted
+      ? setData((current) => ({
+          tableId: current.tableId,
+          tableData: editedData,
+        }))
+      : alert("Please fill out all the fields");
+    isFormCompleted && setShowModal(false);
+    isFormCompleted &&
+      setAddFormData({ id: "", name: "", surname: "", age: "", city: "" });
   };
 
   const handleOnSubmitEditCopy = () => {
@@ -161,8 +184,20 @@ function App() {
         return newTable;
       } else return table;
     });
-    setTableCopies(editedTable);
-    setShowModal(false);
+    const addFormArray = [
+      addFormData.name.replace(/ /g, "").length,
+      addFormData.surname.replace(/ /g, "").length,
+      addFormData.age.replace(/ /g, "").length,
+      addFormData.city.replace(/ /g, "").length,
+    ];
+
+    const isFormCompleted = addFormArray.every(checkLength);
+    isFormCompleted
+      ? setTableCopies(editedTable)
+      : alert("Please fill out all the fields");
+    isFormCompleted && setShowModal(false);
+    isFormCompleted &&
+      setAddFormData({ id: "", name: "", surname: "", age: "", city: "" });
   };
 
   const handleCopyOriginalTable = (id) => {

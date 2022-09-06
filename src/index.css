@@ -11,6 +11,13 @@ code {
     monospace;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 input {
   border: 1px solid rgba(230, 236, 239, 1);
   border-radius: 4px;

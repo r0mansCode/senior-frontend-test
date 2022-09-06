@@ -15,13 +15,23 @@ export const EditModal = ({
   return (
     <div className="formContainer">
       <form>
-        <input placeholder="Name" name="name" onChange={handleInputChange} />
+        <input
+          placeholder="Name"
+          required
+          name="name"
+          onChange={handleInputChange}
+        />
         <input
           placeholder="Surname"
           name="surname"
           onChange={handleInputChange}
         />
-        <input placeholder="Age" name="age" onChange={handleInputChange} />
+        <input
+          placeholder="Age"
+          name="age"
+          type="number"
+          onChange={handleInputChange}
+        />
         <div
           className="customDropdown"
           onClick={() => setShowSelect(!showSelect)}
