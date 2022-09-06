@@ -51,6 +51,8 @@ td {
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 td:nth-last-child(1) {
@@ -116,4 +118,14 @@ td:nth-child(1) {
   color: #b0263d;
   cursor: pointer;
   border: none;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    min-width: 300px;
+  }
+  .actionColumn {
+    gap: 18px;
+    padding-inline: 12px;
+  }
 }
