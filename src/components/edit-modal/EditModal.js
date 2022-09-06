@@ -9,6 +9,7 @@ export const EditModal = ({
   cities,
   handleDropdownChange,
   handleOnSubmit,
+  isFormValid,
 }) => {
   const [showSelect, setShowSelect] = useState(false);
 
@@ -61,6 +62,7 @@ export const EditModal = ({
 
         <div
           className="addButton"
+          style={{ backgroundColor: isFormValid && "rgba(20, 147, 254, 1)" }}
           onClick={() => {
             handleOnSubmit();
           }}

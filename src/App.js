@@ -10,6 +10,7 @@ function App() {
   const cities = ["Riga", "Jurmala", "Ventspils", "Daugavpils"];
   const [showModal, setShowModal] = useState(false);
   const [rowId, setRowId] = useState();
+  const [isFormValid, setIsFormValid] = useState(false);
   const [searchTableId, setTableId] = useState();
   const [editCopy, setEditCopy] = useState(false);
   const [data, setData] = useState({
@@ -40,6 +41,22 @@ function App() {
       tableData: mockedData,
     }));
   }, []);
+
+  useEffect(() => {
+    const addFormArray = [
+      addFormData.name.replace(/ /g, "").length,
+      addFormData.surname.replace(/ /g, "").length,
+      addFormData.age.replace(/ /g, "").length,
+      addFormData.city.replace(/ /g, "").length,
+    ];
+    const isFormCompleted = addFormArray.every(checkLength);
+    setIsFormValid(isFormCompleted);
+    console.log(isFormValid);
+  }, [addFormData]);
+
+  function checkLength(param) {
+    return param > 0;
+  }
 
   const handleOnSubmitAdd = () => {
     const newPerson = {
@@ -128,10 +145,6 @@ function App() {
     setShowModal(true);
   };
 
-  function checkLength(param) {
-    return param > 0;
-  }
-
   const handleOnSubmitEdit = () => {
     const editedData = data.tableData.map((obj) => {
       if (obj.id === rowId)
@@ -144,22 +157,14 @@ function App() {
         };
       else return obj;
     });
-    const addFormArray = [
-      addFormData.name.replace(/ /g, "").length,
-      addFormData.surname.replace(/ /g, "").length,
-      addFormData.age.replace(/ /g, "").length,
-      addFormData.city.replace(/ /g, "").length,
-    ];
-
-    const isFormCompleted = addFormArray.every(checkLength);
-    isFormCompleted
+    isFormValid
       ? setData((current) => ({
           tableId: current.tableId,
           tableData: editedData,
         }))
       : alert("Please fill out all the fields");
-    isFormCompleted && setShowModal(false);
-    isFormCompleted &&
+    isFormValid && setShowModal(false);
+    isFormValid &&
       setAddFormData({ id: "", name: "", surname: "", age: "", city: "" });
   };
 
@@ -184,19 +189,11 @@ function App() {
         return newTable;
       } else return table;
     });
-    const addFormArray = [
-      addFormData.name.replace(/ /g, "").length,
-      addFormData.surname.replace(/ /g, "").length,
-      addFormData.age.replace(/ /g, "").length,
-      addFormData.city.replace(/ /g, "").length,
-    ];
-
-    const isFormCompleted = addFormArray.every(checkLength);
-    isFormCompleted
+    isFormValid
       ? setTableCopies(editedTable)
       : alert("Please fill out all the fields");
-    isFormCompleted && setShowModal(false);
-    isFormCompleted &&
+    isFormValid && setShowModal(false);
+    isFormValid &&
       setAddFormData({ id: "", name: "", surname: "", age: "", city: "" });
   };
 
@@ -244,41 +241,41 @@ function App() {
             handleOnSubmit={
               !editCopy ? handleOnSubmitEdit : handleOnSubmitEditCopy
             }
+            isFormValid={isFormValid}
           />
         </div>
       )}
       <div className="appContainer">
-        <div>
-          <EditModal
-            handleInputChange={handleInputChange}
-            addFormData={addFormData}
-            cities={cities}
-            handleDropdownChange={handleDropdownChange}
-            handleOnSubmit={handleOnSubmitAdd}
-          />
-          <Table
-            data={data.tableData}
-            handleDeleteRow={handleDeleteOriginalTableRow}
-            handleEditRow={handleEditOriginalTableRow}
-            handleCopyTable={handleCopyOriginalTable}
-            handleDeleteTable={handleDeleteOriginalTable}
-          />
-          {tableCopies &&
-            tableCopies.map((table) => {
-              return (
-                <div>
-                  <Table
-                    data={table.tableData}
-                    handleDeleteRow={handleDeleteRow}
-                    handleEditRow={handleEditRow}
-                    handleCopyTable={handleCopyTable}
-                    tableId={table.tableId}
-                    handleDeleteTable={handleDeleteTable}
-                  />
-                </div>
-              );
-            })}
-        </div>
+        <EditModal
+          handleInputChange={handleInputChange}
+          addFormData={addFormData}
+          cities={cities}
+          handleDropdownChange={handleDropdownChange}
+          handleOnSubmit={handleOnSubmitAdd}
+          isFormValid={isFormValid}
+        />
+        <Table
+          data={data.tableData}
+          handleDeleteRow={handleDeleteOriginalTableRow}
+          handleEditRow={handleEditOriginalTableRow}
+          handleCopyTable={handleCopyOriginalTable}
+          handleDeleteTable={handleDeleteOriginalTable}
+        />
+        {tableCopies &&
+          tableCopies.map((table) => {
+            return (
+              <div>
+                <Table
+                  data={table.tableData}
+                  handleDeleteRow={handleDeleteRow}
+                  handleEditRow={handleEditRow}
+                  handleCopyTable={handleCopyTable}
+                  tableId={table.tableId}
+                  handleDeleteTable={handleDeleteTable}
+                />
+              </div>
+            );
+          })}
       </div>
     </>
   );
