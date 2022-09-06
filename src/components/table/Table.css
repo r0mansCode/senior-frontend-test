@@ -1,26 +1,29 @@
 .tableContainer {
+  box-sizing: border-box;
   margin-top: 32px;
   width: fit-content;
 }
 
 table {
+  box-sizing: border-box;
   background-color: white;
   padding: 0;
   border-spacing: 0 !important;
-  border-collapse: collapse;
   width: fit-content;
   min-width: 500px;
 }
 
 tr,
 th {
+  box-sizing: border-box;
   border-collapse: collapse;
+  border: none;
   padding: 0;
   margin: 0;
 }
 
-tr {
-  border: 1px solid rgba(230, 236, 239, 1);
+tr:nth-last-child(1) > td {
+  border-bottom: none;
 }
 
 th {
@@ -37,7 +40,9 @@ th {
 }
 
 td {
-  border: 1px solid rgba(230, 236, 239, 1);
+  box-sizing: border-box;
+  border-right: 1px solid rgba(230, 236, 239, 1);
+  border-bottom: 1px solid rgba(230, 236, 239, 1);
   padding: 8px 4px;
   margin: 0;
   color: rgba(134, 138, 141, 1);
@@ -46,6 +51,14 @@ td {
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
+}
+
+td:nth-last-child(1) {
+  border-right: none;
+}
+
+td:nth-child(1) {
+  border-left: none;
 }
 
 .copyButton {
@@ -90,13 +103,17 @@ td {
 }
 
 .editAction {
+  box-sizing: border-box;
   text-decoration-line: underline;
   color: #057ae3;
   cursor: pointer;
+  border: none;
 }
 
 .deleteAction {
+  box-sizing: border-box;
   text-decoration-line: underline;
   color: #b0263d;
   cursor: pointer;
+  border: none;
 }
