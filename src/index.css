@@ -24,6 +24,10 @@ input {
   background-color: white !important;
 }
 
+input:focus::placeholder {
+  color: transparent;
+}
+
 ::placeholder {
   text-indent: 10px;
   font-weight: 400;
